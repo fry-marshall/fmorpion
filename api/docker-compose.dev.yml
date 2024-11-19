@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  mysqldb:
+    image: mysql:5.7
+    restart: unless-stopped
+    env_file: ./.env
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE_NAME}
+    ports:
+      - "${MYSQL_LOCAL_PORT}:${MYSQL_DOCKER_PORT}"
+    volumes:
+      - ./db:/var/lib/mysql
+    networks:
+      - fchat_network
+  
+  fmorpionapi:
+    depends_on:
+      - mysqldb
+    container_name: fmorpionapi
+    command: ["/bin/sh", "./wait-for-db.sh"]
+    build: .
+    restart: unless-stopped
+    env_file: ./.env
+    volumes:
+      - .:/app
+      - /app/node_modules
+    ports:
+      - $NODE_LOCAL_PORT:$NODE_DOCKER_PORT
+    stdin_open: true
+    tty: true
+    networks:
+      - fmorpion_network
+
+volumes: 
+  db:
+networks:
+  fmorpion_network:
+    driver: bridge
