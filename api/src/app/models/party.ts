@@ -23,20 +23,20 @@ const Party = sequelize.define<PartyInstance>("party", {
   },
   player1: {
     type: DataTypes.STRING,
-    allowNull: false,
+    allowNull: true,
   },
   player2: {
     type: DataTypes.STRING,
-    allowNull: false,
+    allowNull: true,
   },
   winner: {
     type: DataTypes.STRING,
-    allowNull: false,
+    allowNull: true,
   },
-  iscurrentplayer1: {
+  /* iscurrentplayer1: {
     type: DataTypes.BOOLEAN,
     allowNull: false,
-  },
+  }, */
 });
 
 export default Party;

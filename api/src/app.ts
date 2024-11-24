@@ -15,6 +15,6 @@ router(app)
   app.use('/assets/asset_route', Express.static('assets/asset_folder'))
 */
 
-server.listen(process.env.PORT, () => {})
+//server.listen(process.env.PORT, () => {})
 
 export default server
