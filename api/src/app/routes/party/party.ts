@@ -5,7 +5,6 @@ const router = Express.Router()
 
 router.post('/create', Express.json(), PartyController.insert)
 router.get('/', PartyController.getAll)
-router.put('/update',Express.json(),PartyController.update)
-router.delete('/delete',Express.json(), PartyController.delete)
+router.put('/join',Express.json(),PartyController.join)
 
 export default router
