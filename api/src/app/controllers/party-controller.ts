@@ -42,41 +42,22 @@ class PartyController extends Controller {
             if(!req.body.player2 || req.body.player2 === ""){
                 res.status(400).send(Helpers.queryError({msg: "player name is not defined"}))
             }
+            else if(!req.body.code){
+                res.status(400).send(Helpers.queryError({msg: "code is not defined"}))
+            }
+
             else{
                 let party = await Party.findOne({where: {
-                    player2: null
+                    code: req.body.code
                 }})
 
-                let attempt = 0
-                let interval
-    
                 if(!party){
-                    interval = setInterval(async () => {
-                        party = await Party.findOne({where: {
-                            player2: null
-                        }})
-                        if(!party){
-                            attempt++
-                        }
-                        else{
-                            attempt = 2
-                        }
-                    } , 3000)
+                    res.status(404).send(Helpers.queryError({msg: "no parties created with this code"}))
                 }
-
-                if(attempt === 2){
-                    clearInterval(interval)
-                }
-
-                console.log(party)
-
-                if(party){
+                else{
                     party.set({player2: req.body.player2})
                     await party.save()
                     res.status(202).send(Helpers.queryResponse({msg: "party joined", code: party.code}))
-                }
-                else{
-                    res.status(200).send(Helpers.queryResponse({msg: "no party available, try after"}))
                 }
             }
 

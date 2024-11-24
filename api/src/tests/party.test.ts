@@ -72,7 +72,7 @@ describe("party", () => {
         expect(response.status).toBe(400);
       });
 
-      it("should return a 400 for wrong player name (2)", async () => {
+      it("should return a 400 for no params", async () => {
         const body = {};
 
         const response = await request(server)
@@ -81,22 +81,33 @@ describe("party", () => {
         expect(response.body.errors.msg).toBe("player name is not defined");
         expect(response.status).toBe(400);
       });
-    });
 
-    describe("Success cases", () => {
-      it("should return a 200 for no party created", async () => {
-        const body = { player2: "Edy" };
+      it("should return a 400 for not code", async () => {
+        const body = {player2: "toto"};
 
         const response = await request(server)
           .put("/party/join")
           .send(body);
-        
-        expect(response.status).toBe(200);
+        expect(response.body.errors.msg).toBe("code is not defined");
+        expect(response.status).toBe(400);
       });
+
+      it("should return a 400 for wrong code", async () => {
+        const body = {player2: "toto", code: "12356"};
+
+        const response = await request(server)
+          .put("/party/join")
+          .send(body);
+        expect(response.body.errors.msg).toBe("no parties created with this code");
+        expect(response.status).toBe(404);
+      });
+    });
+
+    describe("Success cases", () => {
 
       it("should return a 202 for no party created", async () => {
         const party = await Party.create({id: uuid(), code: "12345", player1: "Marshall" })
-        const body = { player2: "Edy" };
+        const body = { player2: "Edy", code: "12345" };
 
         const response = await request(server)
           .put("/party/join")
