@@ -6,7 +6,7 @@ interface PartyAttributes {
   code?: string;
   player1: string;
   player2?: string | null;
-  winner?: string;
+  winner?: string | null;
   iscurrentplayer1?: boolean;
 }
 

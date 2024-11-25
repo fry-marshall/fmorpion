@@ -121,4 +121,75 @@ describe("party", () => {
       });
     })
   });
+
+  describe("POST /play", () => {
+    describe("Failure cases", () => {
+      it("should return a 400 for missing params (1)", async () => {
+        const body = {};
+
+        const response = await request(server)
+          .post("/party/play")
+          .send(body);
+        
+        expect(response.body.errors.msg).toBe("some args are missing");
+        expect(response.status).toBe(400);
+      });
+
+      it("should return a 400 for missing params (2)", async () => {
+        const body = {position_x: 3, position_y: 3, party_id: ""};
+
+        const response = await request(server)
+          .post("/party/play")
+          .send(body);
+
+        console.log(response.body)
+        
+        expect(response.body.errors.msg).toBe("some args are missing");
+        expect(response.status).toBe(400);
+      });
+
+      it("should return a 404 for party not found", async () => {
+        const body = {position_x: 3, position_y: 3, player: "toto", party_id: "toto"};
+
+        const response = await request(server)
+          .post("/party/play")
+          .send(body);
+        expect(response.body.errors.msg).toBe("no party found");
+        expect(response.status).toBe(404);
+      });
+
+    });
+
+    describe("Success cases", () => {
+
+      it("should return a 201 for well played", async () => {
+        const party = await Party.create({id: uuid(), code: "12345", player1: "Marshall", player2: "Edy" })
+        const body = { position_x: 3, position_y: 3, party_id: "12345", player: "Marshall" };
+
+        const response = await request(server)
+          .post("/party/play")
+          .send(body);
+        
+        expect(response.status).toBe(201);
+        expect(response.body.data.msg).toBe("play done successfully");
+        await party.destroy()
+      });
+
+      it("should return a 201 for well played with winner", async () => {
+        let party = await Party.create({id: uuid(), code: "12345", player1: "Marshall", player2: "Edy" })
+        const body = { position_x: 3, position_y: 3, party_id: "12345", player: "Marshall", winner: "Marshall" };
+
+        const response = await request(server)
+          .post("/party/play")
+          .send(body);
+        
+        party = (await Party.findByPk(party.id))!
+        expect(response.status).toBe(201);
+        expect(response.body.data.msg).toBe("play done successfully");
+        expect(party.winner).toBe("Marshall");
+        await party.destroy()
+      });
+    })
+  });
+
 });
