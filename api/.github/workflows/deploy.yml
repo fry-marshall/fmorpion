@@ -1,0 +1,61 @@
+name: Deploy workflow
+on:
+  release:
+    types:
+      - published
+    tags:
+      - 'v*'
+  
+jobs:
+  deploy-image:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check if tag matches the pattern
+        id: check_tag
+        run: |
+          if [[ "${{ github.event.release.tag_name }}" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "Tag format is valid"
+          else
+            echo "Invalid tag format"
+            exit 1
+          fi
+      - name: Get the code
+        if: success()
+        uses: actions/checkout@v4
+      - name: Login to Docker Hub
+        if: success()
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+      - name: Deploy image
+        if: success()
+        run: make deploy-image
+    
+  pull-image:
+    needs: deploy-image
+    runs-on: ubuntu-latest
+    steps:
+      - name: Log in to vps
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.VPS_IP }}
+          username:  ${{ secrets.VPS_USERNAME }}
+          port: ${{ secrets.VPS_PORT }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            PROJECT_DIR="/home"
+            cd "$PROJECT_DIR"
+            if [ -d "$PROJECT_DIR/fmorpion" ]; then
+              echo "Directory already exists. Updating project..."
+              cd "$PROJECT_DIR/fmorpion"
+              git pull origin main
+            else
+              echo "Directory doesn't exist. Cloning project..."
+              git clone git@github.com:fry-marshall/fmorpion.git
+              cd fmorpion/api
+            fi
+            echo "Running Docker Compose..."
+            echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+            docker compose -f docker-compose.prod.yml pull
+            docker compose -f docker-compose.prod.yml up -d
