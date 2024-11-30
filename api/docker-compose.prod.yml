@@ -19,7 +19,7 @@ services:
     depends_on:
       - mysqldb
     container_name: fmorpionapi
-    image: frymarshall/tassa_api
+    image: frymarshall/fmorpion_api
     command: ["./wait-for-db.sh"]
     restart: unless-stopped
     env_file: ./.env
