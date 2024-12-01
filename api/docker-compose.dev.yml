@@ -6,10 +6,10 @@ services:
     restart: unless-stopped
     env_file: ./.env
     environment:
-      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
-      - MYSQL_DATABASE=${MYSQL_DATABASE_NAME}
+      - MYSQL_ROOT_PASSWORD=${DATABASE_PASSWORD}
+      - MYSQL_DATABASE=${DATABASE_NAME}
     ports:
-      - "${MYSQL_LOCAL_PORT}:${MYSQL_DOCKER_PORT}"
+      - "${DATABASE_LOCAL_PORT}:${DATABASE_DOCKER_PORT}"
     volumes:
       - ./db:/var/lib/mysql
     networks:
@@ -27,7 +27,7 @@ services:
       - .:/app
       - /app/node_modules
     ports:
-      - $NODE_LOCAL_PORT:$NODE_DOCKER_PORT
+      - $LOCAL_PORT:$DOCKER_PORT
     stdin_open: true
     tty: true
     networks:
