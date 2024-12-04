@@ -1,0 +1,17 @@
+
+.button{
+    padding: 22px 10px;
+    width: 250px;
+    display: flex;
+    justify-content: center;
+    border-radius: 50px;
+    font-family: "Inter", sans-serif;
+    color: #ffffff;
+    font-weight: 600;
+    cursor: pointer;
+    transition: filter 0.3s ease;
+}
+
+.button:hover{
+    filter: brightness(1.2);
+}
