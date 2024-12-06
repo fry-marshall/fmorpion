@@ -1,16 +1,17 @@
 import './App.css';
-import Button from './components/Button/Button';
-import logo from './logo.png';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import WelcomePage from './pages/welcome-page/WelcomePage';
+import Multiplayer from './pages/multiplayer/Multiplayer';
+
 
 function App() {
   return (
-    <div className="App">
-      <img src={logo} alt="toto"></img>
-      <div className="options">
-        <Button color="alert" label="Multijoueur" />
-        <Button color="info" label="Joueur unique" />
-      </div>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path='/' element={<WelcomePage />} />
+        <Route path='/multiplayer' element={<Multiplayer />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 

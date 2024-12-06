@@ -1,0 +1,45 @@
+.modal {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  opacity: 0.5;
+  background: #000;
+}
+
+.modal-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+}
+
+.body {
+  background-color: #3969c7;
+  width: 67%;
+  height: 40%;
+  border-radius: 15px;
+  padding: 24px;
+}
+
+.closer {
+  position: absolute;
+  top: 133px;
+  width: 30px;
+  height: 30px;
+  background: white;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  right: 26px;
+  z-index: 2;
+  cursor: pointer;
+  box-shadow: 2px 3px 5px #000;
+}
