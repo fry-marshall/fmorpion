@@ -1,0 +1,20 @@
+.symbol2 {
+  position: relative;
+  height: 20px;
+}
+
+.symbol2 .inner1 {
+  position: absolute;
+  width: 5px;
+  height: 20px;
+  background: #c77539;
+  transform: rotate(45deg);
+}
+
+.symbol2 .inner2 {
+  position: absolute;
+  width: 5px;
+  height: 20px;
+  background: #c77539;
+  transform: rotate(-45deg);
+}

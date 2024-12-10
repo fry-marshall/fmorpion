@@ -6,10 +6,9 @@ import { useNavigate } from "react-router-dom";
 import Popup from "../../components/Popup/Popup";
 
 export default function Multiplayer() {
+  const [openCreateParty, setOpenCreateParty] = useState(false);
 
-    const [openCreateParty, setOpenCreateParty] = useState(false)
-  
-const navigate = useNavigate();
+  const navigate = useNavigate();
 
   function navigateUrl(route) {
     navigate(`/${route}`);
@@ -28,10 +27,27 @@ const navigate = useNavigate();
       </div>
       <img src={logo} alt="logo"></img>
       <div className="options">
-        <Button color="alert" label="Create a party" action={() => setOpenCreateParty(true)}/>
+        <Button
+          color="alert"
+          label="Create a party"
+          action={() => setOpenCreateParty(true)}
+        />
         <Button color="info" label="Join a party" />
       </div>
-      {openCreateParty && <Popup close={() => setOpenCreateParty(false)}>toto</Popup>}
+      {openCreateParty && (
+        <Popup close={() => setOpenCreateParty(false)}>
+          <div className="container-popup">
+            <div className="body-popup">
+              <div className="pseudo">
+                <p className="name">Pseudo</p>
+                <input type="text" required />
+              </div>
+            </div>
+            {/* <div className="spin"></div> */}
+            <Button color="grey" label="Create the party" action={() => navigateUrl('../playing')} />
+          </div>
+        </Popup>
+      )}
     </div>
   );
 }

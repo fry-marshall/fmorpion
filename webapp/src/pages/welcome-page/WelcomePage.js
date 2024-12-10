@@ -15,8 +15,8 @@ export default function WelcomePage(){
     return <div className="welcome-container">
         <img src={logo} alt="logo"></img>
         <div className="options">
-            <Button color="alert" label="Multijoueur" action={() => navigateUrl('multiplayer')} />
-            <Button color="info" label="Joueur unique" />
+            <Button color="alert" label="Multiplayer" action={() => navigateUrl('multiplayer')} />
+            <Button color="info" label="Unique player ( IA soon )" />
         </div>
     </div>
 }

@@ -1,0 +1,23 @@
+.player-grid {
+  padding: 10px;
+  align-items: center;
+  height: 100%;
+  background-color: #163c86;
+  border-radius: 10px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  justify-items: center;
+}
+
+.grid-item {
+  width: 70px;
+  height: 70px;
+  padding: 5px;
+  background-color: #3969c7;
+  border-radius: 5px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

@@ -13,4 +13,7 @@ body {
   align-items: center;
 }
 
-
+p{
+  margin: 0;
+  font-family: "Inter", sans-serif;
+}
